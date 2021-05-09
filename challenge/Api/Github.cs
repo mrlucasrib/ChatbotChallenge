@@ -18,5 +18,8 @@ namespace Api
         public string RepositoryUrl { get; set; }
         [JsonPropertyName("created_at")]
         public DateTime RepositoryCreatedDatetime { get; set; }
+        
+        [JsonPropertyName("language")]
+        public string RepositoryLanguage { get; set; }
     }
 }

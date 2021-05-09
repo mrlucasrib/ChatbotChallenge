@@ -30,7 +30,7 @@ namespace Api.Controllers
         /// </summary>
         /// <param name="numberOfRepositories">Number of repositories to be returned</param>
         /// <returns>A json object containing repository information</returns>
-        [HttpGet("{numberOfRepositories:int=3}")]
+        [HttpGet("{numberOfRepositories:int=5}")]
         public async Task<IActionResult> Get(int numberOfRepositories)
         {
             _client.DefaultRequestHeaders.Accept.Clear();
@@ -41,8 +41,9 @@ namespace Api.Controllers
             {
                 var responseStream = await _client.GetStreamAsync(UrlOrganization);
                 var repositories = await JsonSerializer.DeserializeAsync<List<Github>>(responseStream);
-                var ordered = repositories!.OrderBy(repo =>
+                var ordered = repositories!.Where(rep => rep.RepositoryLanguage == "C#").OrderBy(repo =>
                     repo.RepositoryCreatedDatetime);
+
                 return Ok(ordered.Take(numberOfRepositories));
             }
             catch (Exception e)
